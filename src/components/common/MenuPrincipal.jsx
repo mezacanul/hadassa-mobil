@@ -7,15 +7,13 @@ export default function MenuPrincipal() {
             <Drawer.Positioner>
                 <Drawer.Content className="light" p={"1rem"} color={"white"} bgColor={"pink.600"}>
                     <Drawer.Header>
-                        <Drawer.Title>
                             <Heading size={"3xl"} color={"white"}>Menu</Heading>
-                        </Drawer.Title>
                     </Drawer.Header>
                     <Drawer.Body>
                         <VStack my={"2rem"} fontSize={"2xl"} alignItems={"start"} gap={"2rem"}>
-                            <Link fontWeight={200} color="white" href="/test">Agenda</Link>
-                            <Link fontWeight={200} color="white" href={"/"}>Clientas</Link>
-                            <Link fontWeight={200} color="white" href={"/"}>Perfil</Link>
+                            <Link fontWeight={200} color="white">Agenda</Link>
+                            <Link fontWeight={200} color="white">Clientas</Link>
+                            <Link fontWeight={200} color="white">Perfil</Link>
                         </VStack>
                     </Drawer.Body>
                     <Drawer.CloseTrigger asChild>

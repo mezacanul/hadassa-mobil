@@ -2,6 +2,9 @@ import { Badge, Box, Button, createListCollection, Heading, HStack, Image, Input
 import { useEffect, useRef, useState } from "react";
 import { FaRegCalendar } from "react-icons/fa";
 import MainButton from "../common/MainButton";
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import esLocale from "@fullcalendar/core/locales/es"; // Import Spanish locale
 
 export default function Agenda() {
     return (
@@ -39,7 +42,7 @@ function CitaCard() {
 
             <HStack w={"100%"} justifyContent={"space-between"}>
                 <Badge px={"1rem"} fontWeight={700} variant={"surface"} colorPalette={"green"}>Confirmada</Badge>
-                <Badge px={"1rem"}  fontWeight={700} variant={"surface"} colorPalette={"purple"}>30 mins.</Badge>
+                <Badge px={"1rem"} fontWeight={700} variant={"surface"} colorPalette={"purple"}>30 mins.</Badge>
             </HStack>
         </VStack>
     )
@@ -135,20 +138,29 @@ function DatePicker_HC() {
 
     return (
         <Box w={"100%"} h={"100%"} position={"relative"}>
+            <style>
+                {`input[type="date"]::-webkit-calendar-picker-indicator {
+                    filter: invert(1) brightness(0.8); /* Adjust for white or other colors */
+                }`}
+            </style>
             <Input
-                position={"absolute"}
+                // position={"absolute"}
                 top={0}
-                opacity={0}
+                // opacity={0}
+                color={"pink.500"}
+                borderColor={"pink.500"}
+                borderWidth={"2px"}
                 zIndex={0}
                 // display={"none"}
                 ref={inputRef}
                 value={"2025-06-10"}
                 type="date"
+                fontWeight={700}
             />
-            <HStack onClick={handleClick} h={"100%"} borderColor={"pink.500"} borderWidth={"2px"} borderRadius={"0.3rem"} w={"100%"} justifyContent={"center"} color={"pink.500"} position={"relative"}>
+            {/* <HStack onClick={handleClick} h={"100%"} borderColor={"pink.500"} borderWidth={"2px"} borderRadius={"0.3rem"} w={"100%"} justifyContent={"center"} color={"pink.500"} position={"relative"}>
                 <FaRegCalendar />
                 <Text fontWeight={700}>17/Junio/2025</Text>
-            </HStack>
+            </HStack> */}
         </Box>
     )
 }
