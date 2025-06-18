@@ -1,4 +1,5 @@
 import {
+    Box,
     Button,
     ChakraProvider,
     defaultSystem,
@@ -43,11 +44,13 @@ export default function App({ Component, pageProps }) {
                         py={"2rem"}
                     >
                         <NavBar />
-                        <Component {...pageProps} />
+                        <Box my={"1.5rem"} w={"100%"}>
+                            <Component {...pageProps} />
+                        </Box>
                     </VStack>
 
                     <Portal>
-                        <MenuPrincipal/>
+                        <MenuPrincipal />
                     </Portal>
                 </Drawer.Root>
 

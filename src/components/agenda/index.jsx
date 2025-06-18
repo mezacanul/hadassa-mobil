@@ -2,9 +2,7 @@ import { Badge, Box, Button, createListCollection, Heading, HStack, Image, Input
 import { useEffect, useRef, useState } from "react";
 import { FaRegCalendar } from "react-icons/fa";
 import MainButton from "../common/MainButton";
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import esLocale from "@fullcalendar/core/locales/es"; // Import Spanish locale
+import { useRouter as useNextNav } from "next/navigation";
 
 export default function Agenda() {
     return (
@@ -27,10 +25,16 @@ function Citas() {
 }
 
 function CitaCard() {
+    const NextNav = useNextNav();
+
     return (
-        <VStack className="light" gap={"1rem"} py={"1rem"} px={"1.5rem"} w={"100%"} borderColor={"pink.600"} borderWidth={"2px"} borderRadius={"0.5rem"}>
+        <VStack 
+            onClick={() => {
+                NextNav.push(`/citas/004cbf3c-43d0-11f0-a159-d0bf9c8c737e`);
+            }} 
+            className="light" gap={"1rem"} py={"1rem"} px={"1.5rem"} w={"100%"} borderColor={"pink.600"} borderWidth={"2px"} borderRadius={"0.5rem"}>
             <HStack w={"100%"} gap={"1.5rem"}>
-                <Image src="/img/clientas/avatar-woman.png" w={"8rem"} />
+                <Image src="/img/clientas/avatar-woman.png" w={"7rem"} />
                 <VStack alignItems={"start"}>
                     <Heading fontWeight={800}>Lami Brow</Heading>
                     <Text>10:00 a.m.</Text>
@@ -127,14 +131,14 @@ function CamasSelect() {
 }
 
 function DatePicker_HC() {
-    const inputRef = useRef(null);
+    // const inputRef = useRef(null);
 
-    const handleClick = () => {
-        const input = inputRef.current;
-        if (input) {
-            input.showPicker()
-        }
-    }
+    // const handleClick = () => {
+    //     const input = inputRef.current;
+    //     if (input) {
+    //         input.showPicker()
+    //     }
+    // }
 
     return (
         <Box w={"100%"} h={"100%"} position={"relative"}>
@@ -152,8 +156,8 @@ function DatePicker_HC() {
                 borderWidth={"2px"}
                 zIndex={0}
                 // display={"none"}
-                ref={inputRef}
-                value={"2025-06-10"}
+                // ref={inputRef}
+                // value={"2025-06-10"}
                 type="date"
                 fontWeight={700}
             />
