@@ -1,10 +1,14 @@
 import { Button, Heading, HStack, Text, VStack } from "@chakra-ui/react";
+import MainButton from "./common/MainButton";
+import { loadHook } from "@/utils/lattice-design";
 
 export default function NavBar() {
+    const [menuOpen, setMenuOpen] = loadHook("useMenuOpen")
+
     return (
         <HStack w={"100%"} justifyContent={"space-between"}>
             <FechaTitle />
-            <MainButton>Menu</MainButton>
+            <MainButton onClick={() => { setMenuOpen(true) }}>Menu</MainButton>
         </HStack>
     );
 }
@@ -12,14 +16,8 @@ export default function NavBar() {
 function FechaTitle() {
     return (
         <VStack alignItems={"start"} gap={1}>
-            <Heading size={"3xl"} color={"pink.500"}>Martes 17</Heading>
+            <Heading size={"3xl"} color={"pink.600"}>Martes 17</Heading>
             <Text>Juntio de 2025</Text>
         </VStack>
-    )
-}
-
-function MainButton({ children }) {
-    return (
-        <Button fontWeight={"800"} borderColor={"pink.500"} color={"pink.500"} borderWidth={"2px"} size={"sm"}>{children}</Button>
     )
 }
