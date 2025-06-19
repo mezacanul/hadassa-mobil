@@ -32,7 +32,7 @@ export default function Citas() {
             {cita && <CitaDetails cita={cita} />}
             {cita && <CitaContact cita={cita} />}
             <Fotos data={fotos} />
-            {cita.detalles_cejas && <Descripcion data={cita.detalles_cejas} />}
+            {cita && <Descripcion data={cita.detalles_cejas} />}
         </VStack>
     )
 }
