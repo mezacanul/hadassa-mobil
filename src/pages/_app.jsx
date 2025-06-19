@@ -16,15 +16,30 @@ import { loadHook, Nexus, Singleton } from "../utils/lattice-design";
 import NavBar from "../components/NavBar";
 import Head from "next/head";
 import MenuPrincipal from "@/components/common/MenuPrincipal";
+import { format } from "date-fns";
+import LoginUI from "@/components/LoginUI";
+import Loader from "@/components/common/Loader";
 
 Nexus({
-    useUsuarioID: Singleton("d3e7b9a2-feed-11ef-8036-acde48001122"),
+    // useUsuarioID: Singleton("d3e7b9a2-feed-11ef-8036-acde48001122"),
+    // useUsuarioID: Singleton("d3e7bb64-feed-11ef-8036-acde48001122"),
+    useUsuarioID: Singleton(null),
     useMenuOpen: Singleton(false),
-    useLoader: Singleton(false),
+    useLoader: Singleton(true),
+    useDate: Singleton(format(new Date(), 'yyyy-MM-dd'))
 })
 
 export default function App({ Component, pageProps }) {
     const [menuOpen, setMenuOpen] = loadHook("useMenuOpen")
+    const [usuarioID, setUsuarioID] = loadHook("useUsuarioID")
+    const [loading] = loadHook("useLoader")
+
+    useEffect(() => {
+        const currentUser = localStorage.getItem('hadassa-user')
+        if(currentUser){
+            setUsuarioID(currentUser)
+        }
+    }, [])
 
     return (
         <ChakraProvider value={defaultSystem}>
@@ -35,24 +50,35 @@ export default function App({ Component, pageProps }) {
                 </Head>
 
                 <Drawer.Root open={menuOpen} onOpenChange={(e) => setMenuOpen(e.open)} size={"full"}>
-                    <VStack
+                    <Box
                         h={"100vh"}
                         w={"100vw"}
-                        overflowX={"hidden"}
-                        bg={"white"}
-                        color={"black"}
-                        px={"2rem"}
-                        py={"2rem"}
+                        position={"relative"}
                     >
-                        <NavBar />
-                        <Box my={"1.5rem"} w={"100%"}>
-                            <Component {...pageProps} />
-                        </Box>
-                    </VStack>
+                        <VStack
+                            h={"100vh"}
+                            w={"100vw"}
+                            overflowX={"hidden"}
+                            bg={"white"}
+                            color={"black"}
+                            px={"2rem"}
+                            py={"2rem"}
+                        >
+                            {usuarioID ? (
+                                <>
+                                    <NavBar />
+                                    <Box my={"1.5rem"} w={"100%"}>
+                                        <Component {...pageProps} />
+                                    </Box>
+                                </>
+                            ) : <LoginUI />}
+                        </VStack>
 
-                    <Portal>
-                        <MenuPrincipal />
-                    </Portal>
+                        {loading && <Loader/>}
+                        <Portal>
+                            <MenuPrincipal />
+                        </Portal>
+                    </Box>
                 </Drawer.Root>
 
             </ThemeProvider>

@@ -1,4 +1,4 @@
-import { Badge, Box, Button, createListCollection, Heading, HStack, Image, Input, Portal, Select, Text, VStack } from "@chakra-ui/react";
+import { Badge, Box, Button, createListCollection, Heading, HStack, Image, Input, Portal, Select, Spinner, Text, VStack } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import { FaRegCalendar } from "react-icons/fa";
 import MainButton from "../common/MainButton";
@@ -11,13 +11,17 @@ import { format } from 'date-fns';
 import { getCamaTitle } from "@/utils/main";
 
 export default function Agenda() {
+    const today = format(new Date(), 'yyyy-MM-dd')
     const [usuarioID] = loadHook("useUsuarioID")
     const [usuario, setUsuario] = useState(null)
-    const [date, setDate] = useState(format(new Date(), 'yyyy-MM-dd'))
+    // const [date, setDate] = useState(format(new Date(), 'yyyy-MM-dd'))
+    const [date, setDate] = loadHook("useDate")
     const [cama, setCama] = useState("ambas")
+    const [loading, setLoading] = loadHook("useLoader")
 
     useEffect(() => {
         // console.log(usuarioID);
+        setDate(today)
         Promise.all([
             axios.get(`/api/lashistas?id=${usuarioID}`),
             // axios.get(`/api/camas?id=${usuarioID}`),
@@ -25,6 +29,7 @@ export default function Agenda() {
             .then(([lashistaResp]) => {
                 // console.log(camasResp);
                 setUsuario(lashistaResp.data[0])
+                setLoading(false)
             })
     }, [])
 
@@ -34,6 +39,7 @@ export default function Agenda() {
                 <>
                     <Lashista data={usuario} />
                     <AccionesAgenda
+                        today={today}
                         date={date}
                         setDate={setDate}
                         cama={cama}
@@ -50,7 +56,7 @@ function Citas({ usuarioID, date, cama }) {
     const [citas, setCitas] = useState(null)
 
     useEffect(() => {
-        console.log(usuarioID, date, cama);
+        // console.log(usuarioID, date, cama);
         updateCitas()
     }, [])
 
@@ -62,17 +68,25 @@ function Citas({ usuarioID, date, cama }) {
     const updateCitas = () => {
         // console.log(usuarioID, date);
         axios.get(`/api/citas?lashista=${usuarioID}&date=${date}`).then((citasResp) => {
-            console.log(citasResp);
+            // console.log(citasResp);
             setCitas(citasResp.data)
         })
     }
 
     return (
         <VStack w={"100%"} gap={"2rem"}>
+            {!citas && (
+                <Spinner size={"lg"} color={"pink.500"}/>
+            )}
+            {citas && citas.length == 0 && (
+                <VStack>
+                    <Heading mt={"2rem"}>No hay citas</Heading>
+                </VStack>
+            )}
             {citas &&
                 citas
                     .filter((cita) => {
-                        if (cama != "ambas" ) {
+                        if (cama != "ambas") {
                             return cita.cama_id == cama[0]
                         } else {
                             return true
@@ -88,18 +102,20 @@ function Citas({ usuarioID, date, cama }) {
 
 function CitaCard({ data }) {
     const NextNav = useNextNav();
+    const [loading, setLoading] = loadHook("useLoader")
 
     return (
         <VStack
             alignItems={"start"}
             onClick={() => {
+                setLoading(true)
                 NextNav.push(`/citas/${data.cita_ID}`);
             }}
             className="light" gap={"1rem"} py={"1rem"} px={"1.5rem"} w={"100%"} borderColor={"pink.600"} borderWidth={"2px"} borderRadius={"0.5rem"}>
             <HStack w={"100%"} gap={"1.5rem"} justifyContent={"space-between"}>
-                <Image 
+                <Image
                     src={`${CDN}/img/clientas/${data.foto_clienta ? data.foto_clienta : "avatar-woman.png"}`}
-                    w={"7rem"} 
+                    w={"7rem"}
                 />
                 <VStack alignItems={"end"}>
                     <Heading textAlign={"right"} fontWeight={800}>{data.servicio}</Heading>
@@ -165,12 +181,17 @@ function Lashista({ data }) {
     )
 }
 
-function AccionesAgenda({ date, setDate, cama, setCama }) {
+function AccionesAgenda({ today, date, setDate, cama, setCama }) {
+    useEffect(()=>{
+        console.log("comparison", today, date);
+    }, [])
     return (
         <VStack w={"100%"} gap={"1rem"}>
             <HStack w={"100%"}>
                 <DatePicker_HC date={date} setDate={setDate} />
                 <MainButton
+                    opacity={date == today ? 0.6 : 1}
+                    disabled={date == today ? true : false}
                     variant="solid"
                     w={"6rem"}
                     onClick={() => {

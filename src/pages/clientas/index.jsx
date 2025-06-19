@@ -2,15 +2,18 @@ import { Heading, HStack, Image, Input, Text, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useRouter as useNextNav } from "next/navigation";
 import axios from "axios";
+import { loadHook } from "@/utils/lattice-design";
 
 export default function Clientas() {
     const [clientas, setClientas] = useState(null)
     const [search, setSearch] = useState("")
+    const [loading, setLoading] = loadHook("useLoader");
 
     useEffect(() => {
         axios.get(`/api/clientas`).then((clientasResp) => {
             // console.log(clientasResp.data)
             setClientas(clientasResp.data)
+            setLoading(false)
         })
     }, [])
     return (
@@ -40,9 +43,12 @@ function ListaClientas({ clientas, search }) {
 
 function ClientaCard({ data }) {
     const NextNav = useNextNav();
+    const [loading, setLoading] = loadHook("useLoader");
+
     return (
         <HStack
             onClick={() => {
+                setLoading(true)
                 NextNav.push(`/clientas/${data.id}`);
             }}
             py={"1.5rem"} px={"1rem"} borderRadius={"0.5rem"} borderColor={"pink.500"} borderWidth={"2px"} w={"100%"} justifyContent={"space-between"}>

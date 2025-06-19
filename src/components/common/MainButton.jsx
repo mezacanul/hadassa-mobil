@@ -1,7 +1,30 @@
 import { Button } from "@chakra-ui/react";
 
-export default function MainButton({ w, onClick, variant = "outline", children }) {
+export default function MainButton({ w, onClick, variant = "outline", disabled, opacity, size = "sm", children }) {
     return (
-        <Button bgColor={variant == "outline" ? "initial" : "pink.500" } w={w} onClick={onClick} fontWeight={"800"} borderColor={"pink.500"} color={variant == "outline" ? "pink.500" : "white"} borderWidth={"2px"} size={"sm"}>{children}</Button>
+        <Button 
+            // shadow={variant == "solid" && "sm"}
+            bgColor={
+                variant == "outline" && "initial" || 
+                variant == "solid" && "pink.500" ||
+                variant == "white" && "transparent" 
+                // ? "initial" : "pink.500" 
+            }
+            opacity={opacity}
+            disabled={disabled}
+            w={w} 
+            onClick={onClick} 
+            fontWeight={variant == "white" ? 600 : 800} 
+            borderColor={
+                variant == "outline" && "pink.500" || 
+                variant == "solid" && "pink.500" ||
+                variant == "white" && "white" 
+            } 
+            color={variant == "outline" ? "pink.500" : "white"} 
+            borderWidth={variant == "white" ? "1px" : "2px"} 
+            size={size}
+        >
+            {children}
+        </Button>
     )
 }

@@ -1,10 +1,15 @@
 import { loadHook } from "@/utils/lattice-design";
 import { Button, CloseButton, Drawer, Heading, Link, VStack } from "@chakra-ui/react";
 import { useRouter as useNextNav } from "next/navigation";
+import { useRouter } from "next/router";
+import MainButton from "./MainButton";
 
 export default function MenuPrincipal() {
     const NextNav = useNextNav();
+    const router = useRouter();
     const [menuOpen, setMenuOpen] = loadHook("useMenuOpen")
+    const [usuarioID, setUsuarioID] = loadHook("useUsuarioID")
+    const [loading, setLoading] = loadHook("useLoader")
 
     return (
         <>
@@ -18,19 +23,37 @@ export default function MenuPrincipal() {
                         <VStack my={"2rem"} fontSize={"2xl"} alignItems={"start"} gap={"2rem"}>
                             <Link
                                 onClick={() => {
+                                    if(router.pathname != "/"){
+                                        NextNav.push(`/`);
+                                        setLoading(true)
+                                    }
                                     setMenuOpen(false)
-                                    NextNav.push(`/`);
                                 }}
-                                fontWeight={200} color="white">Agenda</Link>
+                                fontWeight={200} color="white">Inicio / Agenda</Link>
                             <Link
                                 onClick={() => {
+                                    if(router.pathname != `/clientas`){
+                                        NextNav.push(`/clientas`);
+                                        setLoading(true)
+                                    }
                                     setMenuOpen(false)
-                                    NextNav.push(`/clientas`);
                                 }}
                                 fontWeight={200} color="white">Clientas</Link>
                             {/* <Link fontWeight={200} color="white">Perfil</Link> */}
                         </VStack>
                     </Drawer.Body>
+                    <Drawer.Footer>
+                        <MainButton onClick={()=>{
+                            setMenuOpen(false)
+                            setLoading(true)
+                            
+                            setTimeout(() => {
+                                NextNav.push(`/`);
+                                localStorage.removeItem('hadassa-user');
+                                setUsuarioID(null)
+                            }, 500);
+                        }} variant="white">Cerrar Sesión</MainButton>
+                    </Drawer.Footer>
                     <Drawer.CloseTrigger asChild>
                         <CloseButton mt={"1rem"} size="2xl" color={"white"} />
                     </Drawer.CloseTrigger>

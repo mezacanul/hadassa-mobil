@@ -1,5 +1,6 @@
 import Descripcion from "@/components/common/Descripcion";
 import Fotos from "@/components/common/Fotos";
+import { loadHook } from "@/utils/lattice-design";
 import { Badge, Button, Grid, Heading, HStack, Image, Text, Textarea, VStack } from "@chakra-ui/react";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -10,7 +11,7 @@ export default function Clienta() {
     const { clientaID } = router.query;
     const [clienta, setClienta] = useState(null);
     const [fotos, setFotos] = useState(null)
-    // const [loading, setLoading] = loadHook("useLoader");
+    const [loading, setLoading] = loadHook("useLoader");
 
     useEffect(() => {
         if(clientaID){
@@ -23,6 +24,7 @@ export default function Clienta() {
                 console.log(fotosResp.data)
                 setClienta(clientaResp.data[0])
                 setFotos(fotosResp.data)
+                setLoading(false)
             })
         }
     }, [router.isReady]);
@@ -31,7 +33,7 @@ export default function Clienta() {
         <VStack w={"100%"} gap={"2rem"}>
             {clienta && <ClientaAvatar data={clienta} />}
             <Fotos data={fotos}/>
-            {clienta && <Descripcion data={clienta.detalles_cejas}/>}
+            {clienta && <Descripcion data={clienta.detalles_cejas} clienta={clienta.id}/>}
         </VStack>
     )
 }

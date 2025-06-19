@@ -1,23 +1,29 @@
 import Descripcion from "@/components/common/Descripcion";
 import Fotos from "@/components/common/Fotos";
 import { CDN } from "@/config/cdn";
+import { capitalizeFirst, getCamaTitle } from "@/utils/main";
 import { Badge, Button, Grid, Heading, HStack, Image, Text, Textarea, VStack } from "@chakra-ui/react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { format, parse } from 'date-fns';
+import { es } from 'date-fns/locale';
+import { FaClock } from "react-icons/fa";
+import { loadHook } from "@/utils/lattice-design";
 
 export default function Citas() {
     const router = useRouter();
     const { citaID } = router.query;
     const [cita, setCita] = useState(null);
     const [fotos, setFotos] = useState(null)
-    // const [loading, setLoading] = loadHook("useLoader");
+    const [loading, setLoading] = loadHook("useLoader")
 
     useEffect(() => {
         if (citaID) {
             axios.get(`/api/citas?id=${citaID}`).then((citaResp) => {
                 console.log(citaResp.data);
                 setCita(citaResp.data);
+                setLoading(false)
                 axios.get(`/api/fotos_cejas?id=${citaResp.data.clienta_id}`).then((fotosResp) => {
                     console.log(fotosResp.data);
                     setFotos(fotosResp.data);
@@ -28,11 +34,15 @@ export default function Citas() {
 
     return (
         <VStack w={"100%"} gap={"2rem"}>
-            {cita && <CitaTitle cita={cita} />}
-            {cita && <CitaDetails cita={cita} />}
-            {cita && <CitaContact cita={cita} />}
-            <Fotos data={fotos} />
-            {cita && <Descripcion data={cita.detalles_cejas} />}
+            {cita && (
+                <>
+                    <CitaTitle cita={cita} />
+                    <CitaDetails cita={cita} />
+                    <CitaContact cita={cita} />
+                    <Fotos data={fotos} clienta={cita.clienta_id} />
+                    <Descripcion data={cita.detalles_cejas} clienta={cita.clienta_id} />
+                </>
+            )}
         </VStack>
     )
 }
@@ -46,23 +56,56 @@ function CitaContact({ cita }) {
     )
 }
 
+const badgeStyles = {
+    py: "0.2rem",
+    fontSize: "0.9rem",
+    w: "100%",
+    justifyContent: "center",
+    fontWeight: 700,
+    px: "1rem",
+    className: "light",
+    variant: "surface"
+}
+
 function CitaDetails({ cita }) {
+    const [dateObj, setDateObj] = useState(null)
+
+    useEffect(() => {
+        // console.log("test", date);
+        const parsedDate = parse(cita.fecha, 'dd-MM-yyyy', new Date());
+
+        const obj = {
+            dayName: capitalizeFirst(format(parsedDate, "EEEE dd", { locale: es })), // "Jueves 19" 
+            monthYearFormat: capitalizeFirst(format(parsedDate, "MMMM 'de' yyyy", { locale: es })) // "Junio de 2025"
+        }
+        console.log(obj);
+
+        setDateObj(obj)
+    }, [])
+
     return (
         <HStack w={"100%"} justifyContent={"space-between"}>
-            <VStack alignItems={"start"} gap={"0.3rem"}>
-                <Heading>{cita.fecha}</Heading>
-                <Text>{cita.fecha}</Text>
-                <Text mb={"0.5rem"} fontWeight={700} color={"pink.500"}>{cita.hora}</Text>
+            <VStack alignItems={"start"} gap={"0.8rem"}>
+                <VStack alignItems={"start"} gap={0}>
+                    <Heading size={"2xl"}>{dateObj && dateObj.dayName}</Heading>
+                    <Text color={"pink.600"}>{dateObj && dateObj.monthYearFormat}</Text>
+                </VStack>
+                <HStack>
+                    <Text color="pink.600"><FaClock /></Text>
+                    <Text fontWeight={700}>{cita.hora}</Text>
+                </HStack>
                 <Badge
-                    py={"0.2rem"}
-                    fontSize={"0.9rem"}
-                    w={"100%"}
-                    justifyContent={"center"}
-                    fontWeight={700}
-                    px={"1rem"}
-                    className="light"
-                    variant={"surface"}
-                    colorPalette={"purple"} >{cita.duracion} mins.</Badge>
+                    {...badgeStyles}
+                    colorPalette={"purple"}
+                >
+                    {cita.duracion} mins.
+                </Badge>
+                <Badge
+                    {...badgeStyles}
+                    colorPalette={"blue"}
+                >
+                    {getCamaTitle(cita.cama_id)}
+                </Badge>
             </VStack>
             <Image
                 shadow={"sm"}
