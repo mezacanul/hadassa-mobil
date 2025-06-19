@@ -18,8 +18,9 @@ import Head from "next/head";
 import MenuPrincipal from "@/components/common/MenuPrincipal";
 
 Nexus({
+    useUsuarioID: Singleton("d3e7b9a2-feed-11ef-8036-acde48001122"),
+    useMenuOpen: Singleton(false),
     useLoader: Singleton(false),
-    useMenuOpen: Singleton(false)
 })
 
 export default function App({ Component, pageProps }) {

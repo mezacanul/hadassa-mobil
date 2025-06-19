@@ -1,5 +1,5 @@
-function formatHoyTitle (date) {
-    if(date == null) return date
+function formatHoyTitle(date) {
+    if (date == null) return date
     // console.log("hoy title", date);
     // const gmtString = date.date.marker.toGMTString(); // e.g., "Thu, 04 Apr 2025 00:00:00 GMT"
 
@@ -34,8 +34,8 @@ function formatFechaDMY(fecha) {
     return `${day}-${month}-${year}`;
 }
 
-function queryPlusFilters(query, conditions){
-    let fullQuery = query 
+function queryPlusFilters(query, conditions) {
+    let fullQuery = query
     if (conditions.length > 0) {
         fullQuery +=
             " WHERE " +
@@ -60,6 +60,7 @@ function parseQueryFilters(query, filterMap) {
             const sendValue = key == "date" ? formatFechaDMY(value) : value;
 
             conditions.push(`${filterMap[key]} = ?`);
+            console.log(sendValue);
             params.push(sendValue);
         }
     }
@@ -67,4 +68,20 @@ function parseQueryFilters(query, filterMap) {
     return { conditions, params };
 }
 
-export { formatHoyTitle, formatFechaDMY, queryPlusFilters, parseQueryFilters }
+function getCamaTitle(camaID) {
+    const camaArray = camaID.split("-");
+    return `${capitalizeFirst(camaArray[0])} ${camaArray[2]}`;
+}
+
+function capitalizeFirst(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+export {
+    capitalizeFirst,
+    getCamaTitle,
+    formatHoyTitle,
+    formatFechaDMY,
+    queryPlusFilters,
+    parseQueryFilters
+}

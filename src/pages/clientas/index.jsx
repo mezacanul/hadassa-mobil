@@ -1,37 +1,49 @@
 import { Heading, HStack, Image, Input, Text, VStack } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter as useNextNav } from "next/navigation";
+import axios from "axios";
 
 export default function Clientas() {
     const [clientas, setClientas] = useState(null)
+    const [search, setSearch] = useState("")
+
+    useEffect(() => {
+        axios.get(`/api/clientas`).then((clientasResp) => {
+            // console.log(clientasResp.data)
+            setClientas(clientasResp.data)
+        })
+    }, [])
     return (
         <VStack w={"100%"} gap={"2rem"}>
-            <Input placeholder="Buscar" borderColor={"pink.500"} borderWidth={"2px"} type="text" />
-            <ListaClientas clientas={clientas} />
+            <Input value={search} onChange={(e) => { setSearch(e.target.value) }} placeholder="Buscar" borderColor={"pink.500"} borderWidth={"2px"} type="text" />
+            {clientas && <ListaClientas clientas={clientas} search={search} />}
         </VStack>
     )
 }
 
-function ListaClientas({ clientas }) {
+function ListaClientas({ clientas, search }) {
     return (
         <VStack w={"100%"} gap={"1.5rem"}>
-            <ClientaCard />
-            <ClientaCard />
-            <ClientaCard />
-            <ClientaCard />
-            <ClientaCard />
-            <ClientaCard />
-            <ClientaCard />
+            {clientas
+                .filter((clienta) =>
+                    (clienta.nombres + " " + clienta.apellidos)
+                        .toLowerCase()
+                        .includes(search.toLowerCase())
+                )
+                .map((clienta, idx) => {
+                    return <ClientaCard key={idx} data={clienta} />
+                })
+            }
         </VStack>
     )
 }
 
-function ClientaCard() {
+function ClientaCard({ data }) {
     const NextNav = useNextNav();
     return (
         <HStack
             onClick={() => {
-                NextNav.push(`/clientas/00382f03-43c5-11f0-a159-d0bf9c8c737e`);
+                NextNav.push(`/clientas/${data.id}`);
             }}
             py={"1.5rem"} px={"1rem"} borderRadius={"0.5rem"} borderColor={"pink.500"} borderWidth={"2px"} w={"100%"} justifyContent={"space-between"}>
             <Image
@@ -40,9 +52,9 @@ function ClientaCard() {
                 src="/img/clientas/avatar-woman.png"
                 w={"7rem"}
             />
-            <VStack alignItems={"end"}>
-                <Heading w={"90%"} textAlign={"right"}>Naomy Aracelly Alcocer Arceo</Heading>
-                <Text>+52 9993524438</Text>
+            <VStack w={"100%"} alignItems={"end"}>
+                <Heading w={"90%"} textAlign={"right"}>{`${data.nombres} ${data.apellidos}`}</Heading>
+                <Text>{`+${data.lada} ${data.telefono}`}</Text>
             </VStack>
         </HStack>
     )

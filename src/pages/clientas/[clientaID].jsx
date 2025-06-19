@@ -8,29 +8,35 @@ import { useEffect, useState } from "react";
 export default function Clienta() {
     const router = useRouter();
     const { clientaID } = router.query;
-    // const [cita, setCita] = useState(null);
+    const [clienta, setClienta] = useState(null);
+    const [fotos, setFotos] = useState(null)
     // const [loading, setLoading] = loadHook("useLoader");
 
     useEffect(() => {
-        // if (citaID) {
-        //     axios.get(`/api/citas?id=${citaID}`).then((citaResp) => {
-        //         console.log(citaResp.data);
-        //         setCita(citaResp.data);
-        //         // setLoading(false);
-        //     });
-        // }
-    }, [router.isReady, clientaID]);
+        if(clientaID){
+            console.log(clientaID);
+            Promise.all([
+                axios.get(`/api/clientas?id=${clientaID}`),    
+                axios.get(`/api/fotos_cejas?id=${clientaID}`)
+            ]).then(([clientaResp, fotosResp])=>{
+                console.log(clientaResp.data[0])
+                console.log(fotosResp.data)
+                setClienta(clientaResp.data[0])
+                setFotos(fotosResp.data)
+            })
+        }
+    }, [router.isReady]);
 
     return (
         <VStack w={"100%"} gap={"2rem"}>
-            <ClientaAvatar/>
-            <Fotos/>
-            <Descripcion/>
+            {clienta && <ClientaAvatar data={clienta} />}
+            <Fotos data={fotos}/>
+            {clienta && <Descripcion data={clienta.detalles_cejas}/>}
         </VStack>
     )
 }
 
-function ClientaAvatar(){
+function ClientaAvatar({ data }) {
     return (
         <HStack
             py={"1.5rem"} w={"100%"} justifyContent={"space-between"}>
@@ -40,9 +46,11 @@ function ClientaAvatar(){
                 src="/img/clientas/avatar-woman.png"
                 w={"7rem"}
             />
-            <VStack alignItems={"end"}>
-                <Heading w={"90%"} textAlign={"right"}>Naomy Aracelly Alcocer Arceo</Heading>
-                <Text>+52 9993524438</Text>
+            <VStack w={"100%"} alignItems={"end"}>
+                <Heading w={"90%"} textAlign={"right"}>
+                    {`${data.nombres} ${data.apellidos}`}
+                </Heading>
+                <Text>{`+${data.lada} ${data.telefono}`}</Text>
             </VStack>
         </HStack>
     )

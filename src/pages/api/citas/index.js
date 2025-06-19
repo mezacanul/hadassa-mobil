@@ -14,14 +14,7 @@ import { filterTimeSlotsByRange } from "@/utils/detalles-citas";
 import { db_info } from "@/config/db";
 
 export default async function handler(req, res) {
-    const connection = await mysql.createConnection({
-        host: db_info.host,
-        port: db_info.port,
-        user: db_info.user,
-        password: db_info.password,
-        database: db_info.database,
-    });
-
+    const connection = await mysql.createConnection({...db_info})
     try {
         if (req.method === "GET") {
             if (req.query.id) {
@@ -32,6 +25,7 @@ export default async function handler(req, res) {
                             lashistas.nombre as lashista,
                             citas.cama_id,
                             servicios.servicio, 
+                            servicios.minutos as duracion, 
                             citas.fecha,
                             citas.hora,
                             citas.metodo_pago,
@@ -77,7 +71,7 @@ export default async function handler(req, res) {
                         cama_id, 
                         clientas.nombres, 
                         clientas.apellidos, 
-                        clientas.foto_clienta as foto, 
+                        clientas.foto_clienta, 
                         servicios.id as servicio_id, 
                         servicios.servicio, 
                         servicios.precio, 
@@ -89,7 +83,7 @@ export default async function handler(req, res) {
                     LEFT JOIN servicios ON citas.servicio_id = servicios.id
                     LEFT JOIN lashistas ON citas.lashista_id = lashistas.id`;
             let fullQuery = queryPlusFilters(query, conditions);
-            fullQuery = `${fullQuery} ORDER BY STR_TO_DATE(fecha, '%d-%m-%Y') DESC, lashista DESC, hora DESC`;
+            fullQuery = `${fullQuery} ORDER BY hora ASC`;
 
             const [rows] = await connection.execute(fullQuery, params);
             res.status(200).json(rows);
