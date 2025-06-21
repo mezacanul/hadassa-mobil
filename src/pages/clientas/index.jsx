@@ -49,7 +49,7 @@ function ClientaCard({ data }) {
     return (
         <HStack
             bg={"white"}
-            shadow={"sm"}
+            // shadow={"sm"}
             onClick={() => {
                 setLoading(true)
                 NextNav.push(`/clientas/${data.id}`);
