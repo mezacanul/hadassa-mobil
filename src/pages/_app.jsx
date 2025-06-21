@@ -53,13 +53,13 @@ export default function App({ Component, pageProps }) {
                     <Box
                         h={"100vh"}
                         w={"100vw"}
+                        bg={usuarioID ? "#f1f5ff" : "white"}
                         position={"relative"}
                     >
                         <VStack
                             h={"100vh"}
                             w={"100vw"}
                             overflowX={"hidden"}
-                            bg={"white"}
                             color={"black"}
                             px={"2rem"}
                             py={"2rem"}

@@ -37,7 +37,7 @@ export default function LoginUI() {
     }
 
     return (
-        <VStack gap={"2rem"} w={"100%"} h={"85%"} justifyContent={"center"} alignItems={"center"}>
+        <VStack bg={"white"} gap={"2rem"} w={"100%"} h={"85%"} justifyContent={"center"} alignItems={"center"}>
             <Image src="/hadassa-logo.jpg" w={"70%"} />
 
             <VStack w={"85%"}>

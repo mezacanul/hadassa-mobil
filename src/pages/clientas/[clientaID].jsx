@@ -1,5 +1,6 @@
 import Descripcion from "@/components/common/Descripcion";
 import Fotos from "@/components/common/Fotos";
+import { CDN } from "@/config/cdn";
 import { loadHook } from "@/utils/lattice-design";
 import { Badge, Button, Grid, Heading, HStack, Image, Text, Textarea, VStack } from "@chakra-ui/react";
 import axios from "axios";
@@ -44,8 +45,8 @@ function ClientaAvatar({ data }) {
             py={"1.5rem"} w={"100%"} justifyContent={"space-between"}>
             <Image
                 shadow={"sm"}
-                borderRadius={"full"}
-                src="/img/clientas/avatar-woman.png"
+                borderRadius={"lg"}
+                src={`${CDN}/img/clientas/${data.foto_clienta ? data.foto_clienta : "avatar-woman.png"}`}
                 w={"7rem"}
             />
             <VStack w={"100%"} alignItems={"end"}>

@@ -23,7 +23,7 @@ export default function NavBar() {
                 {router.pathname == "/clientas" && "Clientas"}
                 {router.pathname == "/clientas/[clientaID]" && "Clienta"}
             </Heading>
-            <MainButton onClick={() => { setMenuOpen(true) }}>Menu</MainButton>
+            <MainButton variant="outline" bg onClick={() => { setMenuOpen(true) }}>Menu</MainButton>
         </HStack>
     );
 }
@@ -46,7 +46,7 @@ function FechaTitle() {
     }, [date])
 
     return (
-        <VStack alignItems={"start"} gap={1}>
+        <VStack alignItems={"start"} gap={0}>
             <Heading size={"3xl"} color={"pink.600"}>{dateObj && dateObj.dayName}</Heading>
             <Text>{dateObj && dateObj.monthYearFormat}</Text>
         </VStack>

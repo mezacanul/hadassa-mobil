@@ -5,7 +5,7 @@ export default function MainButton({ w, onClick, variant = "outline", disabled, 
         <Button 
             // shadow={variant == "solid" && "sm"}
             bgColor={
-                variant == "outline" && "initial" || 
+                variant == "outline" && "white" || 
                 variant == "solid" && "pink.500" ||
                 variant == "white" && "transparent" 
                 // ? "initial" : "pink.500" 

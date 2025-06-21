@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useRouter as useNextNav } from "next/navigation";
 import axios from "axios";
 import { loadHook } from "@/utils/lattice-design";
+import { CDN } from "@/config/cdn";
 
 export default function Clientas() {
     const [clientas, setClientas] = useState(null)
@@ -18,7 +19,7 @@ export default function Clientas() {
     }, [])
     return (
         <VStack w={"100%"} gap={"2rem"}>
-            <Input value={search} onChange={(e) => { setSearch(e.target.value) }} placeholder="Buscar" borderColor={"pink.500"} borderWidth={"2px"} type="text" />
+            <Input bg={"white"} value={search} onChange={(e) => { setSearch(e.target.value) }} placeholder="Buscar" borderColor={"pink.500"} borderWidth={"2px"} type="text" />
             {clientas && <ListaClientas clientas={clientas} search={search} />}
         </VStack>
     )
@@ -47,6 +48,8 @@ function ClientaCard({ data }) {
 
     return (
         <HStack
+            bg={"white"}
+            shadow={"sm"}
             onClick={() => {
                 setLoading(true)
                 NextNav.push(`/clientas/${data.id}`);
@@ -54,8 +57,8 @@ function ClientaCard({ data }) {
             py={"1.5rem"} px={"1rem"} borderRadius={"0.5rem"} borderColor={"pink.500"} borderWidth={"2px"} w={"100%"} justifyContent={"space-between"}>
             <Image
                 shadow={"sm"}
-                borderRadius={"full"}
-                src="/img/clientas/avatar-woman.png"
+                borderRadius={"lg"}
+                src={`${CDN}/img/clientas/${data.foto_clienta ? data.foto_clienta : "avatar-woman.png"}`}
                 w={"7rem"}
             />
             <VStack w={"100%"} alignItems={"end"}>

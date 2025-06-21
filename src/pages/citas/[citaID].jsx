@@ -10,6 +10,8 @@ import { format, parse } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { FaClock } from "react-icons/fa";
 import { loadHook } from "@/utils/lattice-design";
+import { FaWhatsapp } from "react-icons/fa";
+
 
 export default function Citas() {
     const router = useRouter();
@@ -37,8 +39,8 @@ export default function Citas() {
             {cita && (
                 <>
                     <CitaTitle cita={cita} />
-                    <CitaDetails cita={cita} />
                     <CitaContact cita={cita} />
+                    <CitaDetails cita={cita} />
                     <Fotos data={fotos} clienta={cita.clienta_id} />
                     <Descripcion data={cita.detalles_cejas} clienta={cita.clienta_id} />
                 </>
@@ -49,9 +51,10 @@ export default function Citas() {
 
 function CitaContact({ cita }) {
     return (
-        <VStack alignItems={"start"} w={"100%"}>
-            <Heading w={"80%"} size={"2xl"}>{`${cita.clienta_nombres} ${cita.clienta_apellidos}`}</Heading>
+        <VStack pb={"2rem"} justifyContent={"space-between"} alignItems={"center"} w={"100%"} gap={"0.5rem"} borderBottom={"1px solid gray"}>
+            <Heading color={"pink.600"} textAlign={"center"} size={"2xl"}>{`${cita.clienta_nombres} ${cita.clienta_apellidos}`}</Heading>
             <Text>{`+${cita.lada} ${cita.telefono}`}</Text>
+            {/* <Button size={"lg"} colorPalette={"green"}><FaWhatsapp/> Recordatorio</Button> */}
         </VStack>
     )
 }
@@ -84,32 +87,32 @@ function CitaDetails({ cita }) {
     }, [])
 
     return (
-        <HStack w={"100%"} justifyContent={"space-between"}>
+        <HStack pb={"2rem"} borderBottom={"1px solid grey"} w={"100%"} justifyContent={"space-between"} alignItems={"start"}>
             <VStack alignItems={"start"} gap={"0.8rem"}>
                 <VStack alignItems={"start"} gap={0}>
                     <Heading size={"2xl"}>{dateObj && dateObj.dayName}</Heading>
                     <Text color={"pink.600"}>{dateObj && dateObj.monthYearFormat}</Text>
                 </VStack>
-                <HStack>
+                {/* <HStack>
                     <Text color="pink.600"><FaClock /></Text>
                     <Text fontWeight={700}>{cita.hora}</Text>
-                </HStack>
+                </HStack> */}
                 <Badge
                     {...badgeStyles}
                     colorPalette={"purple"}
                 >
                     {cita.duracion} mins.
                 </Badge>
-                <Badge
+                {/* <Badge
                     {...badgeStyles}
                     colorPalette={"blue"}
                 >
                     {getCamaTitle(cita.cama_id)}
-                </Badge>
+                </Badge> */}
             </VStack>
             <Image
                 shadow={"sm"}
-                borderRadius={"full"}
+                borderRadius={"lg"}
                 src={`${CDN}/img/clientas/${cita.foto_clienta ? cita.foto_clienta : "avatar-woman.png"}`}
                 w={"7rem"}
             />
@@ -119,25 +122,39 @@ function CitaDetails({ cita }) {
 
 function CitaTitle({ cita }) {
     return (
-        <HStack w={"100%"} justifyContent={"space-between"}>
-            <Heading size={"2xl"}>{cita.servicio}</Heading>
+        <VStack gap={"1rem"} pb={"1rem"} w={"100%"} alignItems={"center"} justifyContent={"space-between"} borderBottom={"1px solid gray"}>
+            <Heading w={"85%"} textAlign={"center"} size={"2xl"}>{cita.servicio}</Heading>
             <Badge
-                py={"0.2rem"}
-                fontSize={"0.9rem"}
-                fontWeight={700}
-                px={"1rem"}
-                className="light"
-                variant={"surface"}
-                colorPalette={
-                    cita.status == 0 && "red" ||
-                    cita.status == 1 && "yellow" ||
-                    cita.status == 2 && "green"
-                }
+            style={{width: "7rem"}}
+                width={"5rem"}
+                {...badgeStyles}
+                colorPalette={"blue"}
             >
-                {cita.status == 0 && "Cancelada"}
-                {cita.status == 1 && "Pendiente"}
-                {cita.status == 2 && "Confirmada"}
+                {getCamaTitle(cita.cama_id)}
             </Badge>
-        </HStack>
+            <HStack w={"100%"} justifyContent={"space-between"}>
+                <HStack>
+                    <Text color="pink.600"><FaClock /></Text>
+                    <Text fontWeight={700}>{cita.hora}</Text>
+                </HStack>
+                <Badge
+                    py={"0.3rem"}
+                    fontSize={"0.9rem"}
+                    fontWeight={700}
+                    px={"1rem"}
+                    className="light"
+                    variant={"surface"}
+                    colorPalette={
+                        cita.status == 0 && "red" ||
+                        cita.status == 1 && "yellow" ||
+                        cita.status == 2 && "green"
+                    }
+                >
+                    {cita.status == 0 && "Cancelada"}
+                    {cita.status == 1 && "Pendiente"}
+                    {cita.status == 2 && "Confirmada"}
+                </Badge>
+            </HStack>
+        </VStack>
     )
 }

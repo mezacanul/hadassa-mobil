@@ -76,7 +76,7 @@ function Citas({ usuarioID, date, cama }) {
     return (
         <VStack w={"100%"} gap={"2rem"}>
             {!citas && (
-                <Spinner size={"lg"} color={"pink.500"}/>
+                <Spinner size={"lg"} color={"pink.500"} />
             )}
             {citas && citas.length == 0 && (
                 <VStack>
@@ -106,6 +106,8 @@ function CitaCard({ data }) {
 
     return (
         <VStack
+            bg={"white"}
+            shadow={"sm"}
             alignItems={"start"}
             onClick={() => {
                 setLoading(true)
@@ -165,7 +167,7 @@ function Lashista({ data }) {
 
     return (
         <HStack w={"100%"} gap={"1.5rem"}>
-            <Image src={`${CDN}/img/lashistas/${data.image}`} w={"7rem"} />
+            <Image shadow={"sm"} rounded={"lg"} src={`${CDN}/img/lashistas/${data.image}`} w={"7rem"} />
             <VStack alignItems={"start"}>
                 <Heading size={"2xl"}>{data.nombre}</Heading>
                 {horariosLV.map((hlv, idx) => {
@@ -182,7 +184,7 @@ function Lashista({ data }) {
 }
 
 function AccionesAgenda({ today, date, setDate, cama, setCama }) {
-    useEffect(()=>{
+    useEffect(() => {
         console.log("comparison", today, date);
     }, [])
     return (
@@ -273,6 +275,7 @@ function DatePicker_HC({ date, setDate }) {
                 }`}
             </style>
             <Input
+                bg={"white"}
                 top={0}
                 color={"pink.500"}
                 borderColor={"pink.500"}

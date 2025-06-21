@@ -27,7 +27,7 @@ export default function Descripcion({ data, clienta }) {
     return (
         <VStack w={"100%"} alignItems={"start"} gap={"1.5rem"}>
             <Heading>Descripción:</Heading>
-            <Textarea onChange={(e) => {
+            <Textarea bg={"white"} onChange={(e) => {
                 setEnableUpdate(true)
                 setDescripcion(e.target.value)
             }} p={"1rem"} value={descripcion} placeholder="Añade una descripción..." borderColor={"pink.500"} borderWidth={"2px"} fontSize={"1rem"} h={"17rem"} />
