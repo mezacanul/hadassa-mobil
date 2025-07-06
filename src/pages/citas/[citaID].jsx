@@ -1,7 +1,7 @@
 import Descripcion from "@/components/common/Descripcion";
 import Fotos from "@/components/common/Fotos";
 import { CDN } from "@/config/cdn";
-import { capitalizeFirst, getCamaTitle } from "@/utils/main";
+import { capitalizeFirst, getCamaTitle } from "@/utils/mobil/main";
 import { Badge, Button, Grid, Heading, HStack, Image, Text, Textarea, VStack } from "@chakra-ui/react";
 import axios from "axios";
 import { useRouter } from "next/router";

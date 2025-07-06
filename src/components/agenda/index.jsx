@@ -8,7 +8,7 @@ import axios from "axios";
 import { CDN } from "@/config/cdn";
 import { FaClock } from "react-icons/fa6";
 import { format } from 'date-fns';
-import { getCamaTitle } from "@/utils/main";
+import { getCamaTitle } from "@/utils/mobil/main";
 
 export default function Agenda() {
     const today = format(new Date(), 'yyyy-MM-dd')

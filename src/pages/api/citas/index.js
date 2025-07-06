@@ -1,7 +1,7 @@
 import mysql from "mysql2/promise";
 import { parse, format } from "date-fns";
 import { es, enUS } from "date-fns/locale";
-import { parseQueryFilters, queryPlusFilters } from "@/utils/main";
+import { parseQueryFilters, queryPlusFilters } from "@/utils/mobil/main";
 import {
     generarHorarioDelDia,
     GenerarHorariosDisponibles,
@@ -9,7 +9,7 @@ import {
     getSlots,
     refineHorarios,
     sortByHora,
-} from "@/utils/disponibilidad";
+} from "@/utils/mobil/disponibilidad";
 import { filterTimeSlotsByRange } from "@/utils/detalles-citas";
 import { db_info } from "@/config/db";
 

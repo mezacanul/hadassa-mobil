@@ -4,7 +4,7 @@ import { loadHook } from "@/utils/lattice-design";
 import { useEffect, useState } from "react";
 import { format, parse } from 'date-fns';
 import { es } from 'date-fns/locale';
-import { capitalizeFirst } from "@/utils/main";
+import { capitalizeFirst } from "@/utils/mobil/main";
 import { useRouter } from "next/router";
 
 export default function NavBar() {
@@ -16,7 +16,7 @@ export default function NavBar() {
     }, [router]);
 
     return (
-        <HStack w={"100%"} justifyContent={"space-between"}>
+        <HStack w={"100%"} justifyContent={"space-between"} display={router.pathname == "/compartir" ? "none" : "flex"}>
             {router.pathname == "/" && <FechaTitle />}
             <Heading size={"3xl"} color={"pink.600"}>
                 {router.pathname == "/citas/[citaID]" && "Cita"}
