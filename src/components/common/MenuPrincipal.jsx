@@ -9,6 +9,7 @@ export default function MenuPrincipal() {
     const router = useRouter();
     const [menuOpen, setMenuOpen] = loadHook("useMenuOpen")
     const [usuarioID, setUsuarioID] = loadHook("useUsuarioID")
+    const [usuario, setUsuario] = loadHook("useUsuario")
     const [loading, setLoading] = loadHook("useLoader")
 
     return (
@@ -51,6 +52,7 @@ export default function MenuPrincipal() {
                                 NextNav.push(`/`);
                                 localStorage.removeItem('hadassa-user');
                                 setUsuarioID(null)
+                                setUsuario(null)
                             }, 500);
                         }} variant="white">Cerrar Sesión</MainButton>
                     </Drawer.Footer>
