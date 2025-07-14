@@ -23,6 +23,7 @@ import { CDN } from "@/config/cdn";
 import { FaClock } from "react-icons/fa6";
 import { format } from "date-fns";
 import { getCamaTitle } from "@/utils/mobil/main";
+import DatePicker_HC from "../common/DatePicker_HC";
 
 export default function Agenda({ lashistaID, setCurrentLashista }) {
     const today = format(new Date(), "yyyy-MM-dd");
@@ -440,35 +441,5 @@ function CamasSelect({ cama, setCama, lashistaID }) {
                 </Select.Root>
             )}
         </>
-    );
-}
-
-function DatePicker_HC({ date, setDate }) {
-    return (
-        <Box
-            w={"100%"}
-            h={"100%"}
-            position={"relative"}
-        >
-            <style>
-                {`input[type="date"]::-webkit-calendar-picker-indicator {
-                    filter: invert(1) brightness(0.8); /* Adjust for white or other colors */
-                }`}
-            </style>
-            <Input
-                bg={"white"}
-                top={0}
-                color={"pink.500"}
-                borderColor={"pink.500"}
-                borderWidth={"2px"}
-                zIndex={0}
-                value={date}
-                onChange={(e) => {
-                    setDate(e.target.value);
-                }}
-                type="date"
-                fontWeight={700}
-            />
-        </Box>
     );
 }

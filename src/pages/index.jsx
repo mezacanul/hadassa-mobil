@@ -36,19 +36,6 @@ export default function Home() {
         }
     }, [usuario]);
 
-    // useEffect(() => {
-    //     // console.log(usuarioID);
-    //     Promise.all([
-    //         axios.get(`/api/lashistas?id=${usuarioID}`),
-    //         // axios.get(`/api/camas?id=${usuarioID}`),
-    //     ])
-    //         .then(([lashistaResp]) => {
-    //             // console.log(camasResp);
-    //             setUsuario(lashistaResp.data[0])
-    //             setLoading(false)
-    //         })
-    // }, [])
-
     return (
         <VStack
             w={"100%"}

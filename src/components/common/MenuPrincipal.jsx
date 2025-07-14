@@ -40,6 +40,15 @@ export default function MenuPrincipal() {
                                     setMenuOpen(false)
                                 }}
                                 fontWeight={200} color="white">Clientas</Link>
+                            <Link
+                                onClick={() => {
+                                    if(router.pathname != `/compartir`){
+                                        NextNav.push(`/compartir`);
+                                        setLoading(true)
+                                    }
+                                    setMenuOpen(false)
+                                }}
+                                fontWeight={200} color="white">Horarios Disponibles</Link>
                             {/* <Link fontWeight={200} color="white">Perfil</Link> */}
                         </VStack>
                     </Drawer.Body>
