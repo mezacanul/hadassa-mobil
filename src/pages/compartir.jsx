@@ -27,7 +27,6 @@ import {
 import { IoMdHome } from "react-icons/io";
 import { useRouter as useNextNav } from "next/navigation";
 
-
 const timeZone = "America/Mexico_City"; // GMT-6
 
 export default function Compartir() {
@@ -82,15 +81,22 @@ export default function Compartir() {
             setServicios(serviciosIndexed);
             // return
 
+            const zonedDate = toZonedTime(
+                new Date(`${date}T00:00:00`),
+                timeZone
+            );
+            const fecha = format(zonedDate, "dd-MM-yyyy")
+
             const send = {
                 action: "getHorariosDisponibles",
                 dev: true,
-                fecha: format(date, "dd-MM-yyyy"),
+                fecha,
                 lashista_id: null,
                 servicio_id: null,
             };
 
-            // console.log(send);
+            console.log(fecha);
+            // return
 
             const serviciosCalls = servicios.map((serv) =>
                 // console.log({
@@ -129,7 +135,7 @@ export default function Compartir() {
     }
 
     return (
-        <div>
+        <Box w={"100%"} mb={"3rem"} mt={"-0.5rem"}>
             <TituloPrincipal fechaStr={fechaStr} />
 
             {lashista && !consultando && (
@@ -159,7 +165,7 @@ export default function Compartir() {
                     disponibles={disponibles}
                 />
             )}
-        </div>
+        </Box>
     );
 }
 
@@ -174,14 +180,14 @@ function Opciones({
     showOpciones,
     setShowOpciones,
     disponibles,
-    setLoading
+    setLoading,
 }) {
     const NextNav = useNextNav();
-    
+
     return (
         <VStack
             mt={!showOpciones ? "0.5rem" : "1rem"}
-            mb={showOpciones ? "2rem" : "1.5rem"}
+            mb={showOpciones ? "2rem" : "1rem"}
         >
             <VStack
                 my={"1rem"}
@@ -235,12 +241,12 @@ function Opciones({
                             shadow={"sm"}
                             color={"white"}
                             colorPalette={"blue"}
-                            onClick={()=>{
+                            onClick={() => {
                                 NextNav.push(`/`);
-                                setLoading(true)
+                                setLoading(true);
                             }}
                         >
-                            <IoMdHome/>
+                            <IoMdHome />
                         </Button>
                     </Grid>
                 )}
@@ -350,7 +356,8 @@ function ServicioInfo({ disp }) {
             </Heading>
             <Grid
                 // w={"100%"}
-                gap={"0.5rem"}
+                gap={"0.8rem"}
+                gapY={"1rem"}
                 gridTemplateColumns={"1fr 1fr 1fr 1fr"}
             >
                 {disp.horarios.length > 0 &&
