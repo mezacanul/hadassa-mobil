@@ -8,12 +8,14 @@ async function update(body) {
     const { id, status } = body;
     const result = await liveRepository.update(id, status);
     if (result.affectedRows == 1) {
-      const all = await liveRepository.getAll();
-      return all;
+        const all = await liveRepository.getAll();
+        return all;
     }
 }
 
-export default {
+const liveController = {
     getAll,
     update,
 };
+
+export default liveController;
