@@ -22,6 +22,7 @@ export default function NavBar() {
                 {router.pathname == "/citas/[citaID]" && "Cita"}
                 {router.pathname == "/clientas" && "Clientas"}
                 {router.pathname == "/clientas/[clientaID]" && "Clienta"}
+                {router.pathname == "/live" && "Lugares"}
             </Heading>
             <MainButton variant="outline" bg onClick={() => { setMenuOpen(true) }}>Menu</MainButton>
         </HStack>
