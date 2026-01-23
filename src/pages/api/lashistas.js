@@ -3,8 +3,8 @@ import mysql from "mysql2/promise";
 import { db_info } from "@/config/db";
 
 export default async function handler(req, res) {
-    const lashista_ID = req.query.id ? req.query.id : ""
-    let query
+    const lashista_ID = req.query.id ? req.query.id : "";
+    let query;
     const connection = await mysql.createConnection({
         host: db_info.host,
         port: db_info.port,
@@ -14,19 +14,22 @@ export default async function handler(req, res) {
     });
 
     try {
-        if(lashista_ID){
+        if (lashista_ID) {
             query = `SELECT 
                         * 
                     FROM 
                         lashistas 
                     WHERE id = ?
-                    ORDER BY nombre ASC`
+                    ORDER BY nombre ASC`;
         } else {
             // Query the lashistas table
-            query = "SELECT * FROM lashistas ORDER BY nombre ASC"
+            query =
+                "SELECT * FROM lashistas WHERE isDeleted != 1 ORDER BY nombre ASC";
         }
-        
-        const [rows] = await connection.execute(query, [lashista_ID])
+
+        const [rows] = await connection.execute(query, [
+            lashista_ID,
+        ]);
         // Send the results as an array
         res.status(200).json(rows);
     } catch (error) {
