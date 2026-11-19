@@ -19,6 +19,13 @@ export default function Citas() {
     const [cita, setCita] = useState(null);
     const [fotos, setFotos] = useState(null)
     const [loading, setLoading] = loadHook("useLoader")
+    const [usuario, setUsuario] = loadHook("useUsuario")
+
+    useEffect(() => {
+        if (usuario) {
+            console.log(usuario);
+        }
+    }, [usuario]);
 
     useEffect(() => {
         if (citaID) {
@@ -39,7 +46,7 @@ export default function Citas() {
             {cita && (
                 <>
                     <CitaTitle cita={cita} />
-                    <CitaContact cita={cita} />
+                    <CitaContact cita={cita} rol={usuario.rol}/>
                     <CitaDetails cita={cita} />
                     <Fotos data={fotos} clienta={cita.clienta_id} />
                     <Descripcion data={cita.detalles_cejas} clienta={cita.clienta_id} />
@@ -49,11 +56,13 @@ export default function Citas() {
     )
 }
 
-function CitaContact({ cita }) {
+function CitaContact({ cita, rol }) {
     return (
         <VStack pb={"2rem"} justifyContent={"space-between"} alignItems={"center"} w={"100%"} gap={"0.5rem"} borderBottom={"1px solid gray"}>
             <Heading color={"pink.600"} textAlign={"center"} size={"2xl"}>{`${cita.clienta_nombres} ${cita.clienta_apellidos}`}</Heading>
-            <Text>{`+${cita.lada} ${cita.telefono}`}</Text>
+            {rol == "administradora" && (
+                <Text>{`+${cita.lada} ${cita.telefono}`}</Text>
+            )}
             {/* <Button size={"lg"} colorPalette={"green"}><FaWhatsapp/> Recordatorio</Button> */}
         </VStack>
     )
